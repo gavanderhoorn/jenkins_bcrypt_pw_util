@@ -15,6 +15,7 @@
 # limitations under the License.
 
 import sys
+import argparse
 
 _OS_EX_USAGE=64
 _OS_EX_UNAVAILABLE=69
@@ -25,17 +26,20 @@ except:
     sys.stderr.write("Cannot import bcrypt library, do you have it installed?\n")
     sys.exit(_OS_EX_UNAVAILABLE)
 
-if len(sys.argv) != 2:
-    from os.path import basename
-    sys.stderr.write("USAGE: {} PASSWORD\n".format(basename(sys.argv[0])))
-    sys.exit(_OS_EX_USAGE)
+parser = argparse.ArgumentParser()
+parser.add_argument('-v', '--verbose', action='store_true', dest='verbose')
+parser.add_argument('PASSWORD', help='Plain text to hash.')
+args = parser.parse_args()
 
-plaintext = sys.argv[1].encode('UTF-8')
+plaintext = args.PASSWORD.encode('UTF-8')
 
 # https://gist.github.com/Voronenko/d50fc04cbbf26dfed37d
 # https://pypi.python.org/pypi/bcrypt/3.1.0
 pw = bcrypt.hashpw(plaintext, bcrypt.gensalt(10, prefix=b"2a"))
 
-print ("plaintext : {}".format(plaintext.decode('UTF-8')))
-print ("hash      : {}".format(pw.decode('UTF-8')))
-#print ("check     : {}".format("passed" if bcrypt.checkpw(plaintext, pw) else "failed"))
+if args.verbose:
+    print ("plaintext : {}".format(plaintext.decode('UTF-8')))
+    print ("hash      : {}".format(pw.decode('UTF-8')))
+    #print ("check     : {}".format("passed" if bcrypt.checkpw(plaintext, pw) else "failed"))
+else:
+    print (pw.decode('UTF-8'))
