@@ -38,4 +38,4 @@ pw = bcrypt.hashpw(plaintext, bcrypt.gensalt(10, prefix=b"2a"))
 
 print ("plaintext : {}".format(plaintext.decode('UTF-8')))
 print ("hash      : {}".format(pw.decode('UTF-8')))
-print ("check     : {}".format("passed" if bcrypt.hashpw(plaintext, pw) else "failed"))
+#print ("check     : {}".format("passed" if bcrypt.checkpw(plaintext, pw) else "failed"))
