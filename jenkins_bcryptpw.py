@@ -30,12 +30,12 @@ if len(sys.argv) != 2:
     sys.stderr.write("USAGE: {} PASSWORD\n".format(basename(sys.argv[0])))
     sys.exit(_OS_EX_USAGE)
 
-plaintext = sys.argv[1]
+plaintext = sys.argv[1].encode('UTF-8')
 
 # https://gist.github.com/Voronenko/d50fc04cbbf26dfed37d
 # https://pypi.python.org/pypi/bcrypt/3.1.0
 pw = bcrypt.hashpw(plaintext, bcrypt.gensalt(10, prefix=b"2a"))
 
-print ("plaintext : {}".format(plaintext))
-print ("hash      : {}".format(pw))
-print ("check     : {}".format("passed" if bcrypt.checkpw(plaintext, pw) else "failed"))
+print ("plaintext : {}".format(plaintext.decode('UTF-8')))
+print ("hash      : {}".format(pw.decode('UTF-8')))
+#print ("check     : {}".format("passed" if bcrypt.checkpw(plaintext, pw) else "failed"))
